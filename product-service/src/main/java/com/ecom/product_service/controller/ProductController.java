@@ -88,7 +88,7 @@ public class ProductController {
 
     @Operation(summary = "Remove product stock", description = "Accessible only by Admin")
     @PutMapping("/removeStock/{productId}")
-    public ResponseEntity<String> removeStock(@PathVariable String productId, @RequestParam int quantity) {
+    public ResponseEntity<String> removeStock(@PathVariable String productId, @RequestParam int quantity,String valid) {
         validateAdminRole();
         productService.removeQuantity(productId, quantity);
         return ResponseEntity.ok("Stock decreased");

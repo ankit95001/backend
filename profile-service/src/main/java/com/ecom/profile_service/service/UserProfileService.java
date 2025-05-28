@@ -1,9 +1,12 @@
 package com.ecom.profile_service.service;
 
 import com.ecom.profile_service.entity.EcomUser;
+import com.ecom.profile_service.entity.UserContext;
 import com.ecom.profile_service.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserProfileService {
@@ -47,5 +50,9 @@ public class UserProfileService {
         }
 
         return userRepository.save(existingUser);
+    }
+
+    public List<EcomUser> getAllUsers() {
+        return userRepository.findAll();
     }
 }

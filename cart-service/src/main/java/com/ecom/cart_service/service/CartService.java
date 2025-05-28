@@ -65,7 +65,7 @@ public class CartService {
         }
 
         // Update stock in product service
-        productClient.removeStock(productId, 1);
+//        productClient.removeStock(productId, 1,"valid");
 
         // Recalculate total
         cart.setItems(items);
