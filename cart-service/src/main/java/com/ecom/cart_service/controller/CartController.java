@@ -75,6 +75,19 @@ public class CartController {
         return ResponseEntity.ok("Cart cleared successfully.");
     }
 
+    @Operation(summary = "Update quantity of product")
+    @PutMapping("/{userId}/update/{productId}")
+    public ResponseEntity<String> updateQuantity(
+            @Parameter(description = "ID of the user")
+            @PathVariable @Min(1) Long userId ,@PathVariable String productId,@RequestParam int quantity) {
+
+        validateUserAccess(userId);
+        cartService.updateQuantity(userId,productId,quantity);
+        return ResponseEntity.ok("Cart updated successfully.");
+    }
+
+
+
     private void validateUserAccess(Long userId) {
         if (userContext.getUserId() == null || !userId.equals(userContext.getUserId())) {
             throw new UnauthorizedAccessException("You are not authorized to access this cart.");

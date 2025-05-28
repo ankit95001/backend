@@ -4,10 +4,12 @@ import com.ecom.cart_service.dto.ProductDataForCart;
 import com.ecom.cart_service.entity.Cart;
 import com.ecom.cart_service.entity.CartItem;
 import com.ecom.cart_service.exception.CartNotFoundException;
+import com.ecom.cart_service.exception.ItemNotFoundException;
 import com.ecom.cart_service.exception.ProductNotFoundException;
 import com.ecom.cart_service.exception.StockUnavailableException;
 import com.ecom.cart_service.feign.ProductClient;
 import com.ecom.cart_service.repository.CartRepository;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -133,5 +135,40 @@ public class CartService {
     private Cart getCartOrThrow(Long userId) {
         return cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found for user ID: " + userId));
+    }
+
+    public void updateQuantity(Long userId, String productId, int quantity) {
+        // Get the user's cart
+        Cart cart = getCartDetails(userId);
+
+        // Find the item in the cart
+        Optional<CartItem> existingItem = cart.getItems().stream()
+                .filter(item -> item.getProductId().equals(productId))
+                .findFirst();
+
+        if (existingItem.isEmpty()) {
+            throw new ItemNotFoundException("Product not found in cart.");
+        }
+
+        // Check stock availability
+        boolean isAvailable = Boolean.TRUE.equals(productClient.checkStock(productId, quantity).getBody());
+        if (!isAvailable) {
+            throw new StockUnavailableException("Requested quantity is not in stock.");
+        }
+
+        // Update quantity
+        int updatedQuantity = existingItem.get().getQuantity()+quantity;
+        if(updatedQuantity<=0){
+            cart.getItems().remove(existingItem.get());
+            return;
+        }
+        existingItem.get().setQuantity(updatedQuantity);
+
+        // Recalculate total price
+        cart.setTotalPrice(calculateTotal(cart.getItems()));
+        cart.setLastUpdated(LocalDateTime.now());
+
+        // Save updated cart
+        cartRepository.save(cart);
     }
 }

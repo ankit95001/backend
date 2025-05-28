@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductDataForCart {
     private String ProductId;
     private String name;
