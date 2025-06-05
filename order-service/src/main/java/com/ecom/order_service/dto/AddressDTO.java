@@ -6,10 +6,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressDTO {
-    private String street;
+    private Long id;
+
+    private String name;
+
+    private String locality;
+
+    private String address;
+
     private String city;
+
     private String state;
-    private String zipCode;
-    private String country;
+
+    private String pinCode;
 }
 

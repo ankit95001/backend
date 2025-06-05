@@ -46,7 +46,6 @@ public class ProductController {
     @Operation(summary = "Fetch products by category", description = "Accessible by anyone")
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
-
         return ResponseEntity.ok(productService.getProductsByCategory(category));
     }
 

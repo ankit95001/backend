@@ -27,7 +27,7 @@ public class RabbitMQConsumer {
         System.out.println(message.getEmail());
         System.out.println(message.getSubject());
         System.out.println(message.getMessage());
-//        sendEmailService.sendEmail("ankit95001kumar@gmail.com",message,"Test subject");
+        sendEmailService.sendEmail(message.getEmail(), message.getMessage(), message.getSubject());
 
     }
 }

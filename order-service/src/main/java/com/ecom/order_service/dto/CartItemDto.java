@@ -12,7 +12,7 @@ import org.bson.types.ObjectId;
 @Setter
 public class CartItemDto {
 
-    private ObjectId productId;
+    private String productId;
 
     private int quantity;
 

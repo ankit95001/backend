@@ -92,10 +92,6 @@ public class OrderService {
 
             stripeResponse.setOrderId(savedOrder.getOrderId());
 
-            // 6. Clear cart
-            cartClient.clearCart(userId);
-            log.info("Cart cleared for userId: {}", userId);
-
             return stripeResponse;
 
         } catch (CartEmptyException | UserProfileNotFoundException | IllegalArgumentException ex) {
@@ -133,23 +129,28 @@ public class OrderService {
                             "Order Summary:\n" +
                             "  • Order ID     : %s\n" +
                             "  • Order Date   : %s\n" +
-                            "  • Shipping To  : %s, %s - %s\n" +
+                            "  • Shipping To  : %s, %s, %s, %s - %s\n" +
                             "  • Total Amount : ₹%.2f\n" +
                             "  • Payment Status: %s\n\n" +
                             "You’ll receive another notification once your package is out for delivery.\n\n" +
                             "Thank you for shopping with us.\n" +
                             "Warm regards,\n" +
-                            "ShopEase Team",
+                            "E-Shopping zone Team",
 
                     userForOrder.getFullName(),
                     order.getOrderId().toString(),
                     order.getOrderDate().format(DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")),
-                    order.getShippingAddress().getStreet(),
+                    order.getShippingAddress().getLocality(),
+                    order.getShippingAddress().getAddress(),
                     order.getShippingAddress().getCity(),
-                    order.getShippingAddress().getZipCode(),
+                    order.getShippingAddress().getState(),
+                    order.getShippingAddress().getPinCode(),
                     order.getAmount(),
                     "PAID".equalsIgnoreCase(paymentDetails.getPaymentStatus()) ? "Paid" : "Unpaid"
             );
+            // 6. Clear cart
+            cartClient.clearCart(order.getUserId());
+            log.info("Cart cleared for userId: {}", order.getUserId());
 
             return messageClient.sendMessage(new MessageDto(
                     userForOrder.getFullName(),

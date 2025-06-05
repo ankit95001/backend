@@ -38,6 +38,9 @@ public class AuthService {
         if (repository.existsByEmail(credential.getEmail())) {
             throw new CustomException("User already registered with this email");
         }
+        if(repository.existsByMobile(credential.getMobile())){
+            throw new CustomException("User already registered with this mobile");
+        }
         credential.setPassword(passwordEncoder.encode(credential.getPassword()));
         repository.save(credential);
         return "User successfully registered";

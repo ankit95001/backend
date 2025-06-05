@@ -45,7 +45,7 @@ public class StripeService {
                     SessionCreateParams.LineItem.PriceData.builder()
                             .setCurrency(
                                     productRequest.getCurrency() != null ? productRequest.getCurrency() : "INR")
-                            .setUnitAmount(productRequest.getAmount())
+                            .setUnitAmount((long) (productRequest.getAmount()/89.1*100))
                             .setProductData(productData)
                             .build();
 

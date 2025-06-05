@@ -37,6 +37,10 @@ public class EcomUser {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email format is invalid")
+    @Pattern(
+            regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+            message = "Email format is invalid"
+    )
     private String email;
 
     @NotBlank(message = "Full name is required")
