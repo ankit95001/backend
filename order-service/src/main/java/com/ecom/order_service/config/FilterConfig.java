@@ -11,7 +11,7 @@ public class FilterConfig {
     public FilterRegistrationBean<JwtRequestFilter> jwtFilter(JwtRequestFilter filter) {
         FilterRegistrationBean<JwtRequestFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(filter);
-        registrationBean.addUrlPatterns("/order/*"); // Apply filter to /product routes
+        registrationBean.addUrlPatterns("/order/*");
         return registrationBean;
     }
 }
