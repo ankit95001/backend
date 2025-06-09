@@ -1,5 +1,6 @@
 package com.ecom.profile_service.controller;
 
+import com.ecom.profile_service.dto.EcomUserUpdateRequest;
 import com.ecom.profile_service.entity.EcomUser;
 import com.ecom.profile_service.entity.UserContext;
 import com.ecom.profile_service.service.UserProfileService;
@@ -35,8 +36,8 @@ public class UserProfileController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<EcomUser> updateUserProfile(@PathVariable Long userId, @RequestBody EcomUser updatedUser) {
-        return ResponseEntity.ok(userProfileService.updateUser(userId, updatedUser));
+    public ResponseEntity<EcomUser> updateUserProfile(@PathVariable Long userId, @RequestBody EcomUserUpdateRequest updatedUser) {
+        return ResponseEntity.ok(userProfileService.updateProfile(userId, updatedUser));
     }
 
     @GetMapping("orders/{userId}")

@@ -29,6 +29,7 @@ public class CartService {
 
     public Cart addProductToCart(Long userId, String productId) {
         // Get product info
+        System.out.println("product id in addtocart :"+productId);
         ProductDataForCart product = getProductDataOrThrow(productId);
 
         // Get or create cart
@@ -125,6 +126,7 @@ public class CartService {
     }
 
     private ProductDataForCart getProductDataOrThrow(String productId) {
+        System.out.println("product in getProduct "+productId);
         ResponseEntity<ProductDataForCart> response = productClient.productDataForCart(productId);
         if (response == null || response.getBody() == null) {
             throw new ProductNotFoundException("Product not found with ID: " + productId);
